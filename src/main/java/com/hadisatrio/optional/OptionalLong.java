@@ -35,7 +35,7 @@ import java.io.Serializable;
  * {@code get()} will return the value.
  * <p>
  * <p>Additional methods that depend on the presence or absence of a contained
- * value are provided, such as {@link #or(long) orElse()}
+ * value are provided, such as {@link #orElse(long) orElse()}
  * (return a default value if value not present),
  * {@link #ifPresent(LongConsumer) ifPresent()} (execute a block of code
  * if the value is present), and
@@ -47,9 +47,9 @@ import java.io.Serializable;
 public final class OptionalLong implements Serializable {
 
     /**
-     * Common instance for {@code OptionalLong}s with no value present / {@link #absent()}.
+     * Common instance for {@code OptionalLong}s with no value present / {@link #empty()}.
      */
-    private static final OptionalLong ABSENT = new OptionalLong();
+    private static final OptionalLong empty = new OptionalLong();
 
     /**
      * Indicates whether or not the value is present.
@@ -62,7 +62,7 @@ public final class OptionalLong implements Serializable {
     private final long value;
 
     /**
-     * Constructs an absent instance.
+     * Constructs an empty instance.
      */
     private OptionalLong() {
         this.isPresent = false;
@@ -90,13 +90,13 @@ public final class OptionalLong implements Serializable {
     }
 
     /**
-     * Returns an absent {@code OptionalLong} instance.  No value is present for this
+     * Returns an empty {@code OptionalLong} instance.  No value is present for this
      * Optional.
      *
-     * @return an absent {@code OptionalLong}
+     * @return an empty {@code OptionalLong}
      */
-    public static OptionalLong absent() {
-        return ABSENT;
+    public static OptionalLong empty() {
+        return empty;
     }
 
     /**
@@ -119,7 +119,7 @@ public final class OptionalLong implements Serializable {
         if (isPresent()) {
             return value;
         }
-        throw new IllegalStateException("Value is absent.");
+        throw new IllegalStateException("Value is empty.");
     }
 
     /**
@@ -128,7 +128,7 @@ public final class OptionalLong implements Serializable {
      * @param other the value to be returned if there is no value present
      * @return the value, if present, otherwise {@code other}
      */
-    public long or(long other) {
+    public long orElse(long other) {
         return isPresent() ? value : other;
     }
 
@@ -141,7 +141,7 @@ public final class OptionalLong implements Serializable {
      * @return the value if present otherwise the result of {@code otherSupplier.get()}
      * @throws IllegalArgumentException if {@code otherSupplier} is null
      */
-    public long or(LongSupplier otherSupplier) {
+    public long orElse(LongSupplier otherSupplier) {
         if (otherSupplier == null) {
             throw new IllegalArgumentException("null may not be passed as an argument.");
         }
@@ -209,7 +209,7 @@ public final class OptionalLong implements Serializable {
      * otherwise invoke the function passed as the second parameter.
      *
      * @param consumer block to be executed if a value is present
-     * @param function block to be executed if a value is absent
+     * @param function block to be executed if a value is empty
      */
     public void ifPresentOrElse(LongConsumer consumer, Function function) {
         if (isPresent()) {
@@ -269,6 +269,6 @@ public final class OptionalLong implements Serializable {
      */
     @Override
     public String toString() {
-        return isPresent() ? String.format("OptionalLong[%s]", value) : "OptionalLong.ABSENT";
+        return isPresent() ? String.format("OptionalLong[%s]", value) : "OptionalLong.empty";
     }
 }

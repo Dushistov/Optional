@@ -34,7 +34,7 @@ import java.io.Serializable;
  * {@code get()} will return the value.
  * <p>
  * <p>Additional methods that depend on the presence or absence of a contained
- * value are provided, such as {@link #or(java.lang.Object) orElse()}
+ * value are provided, such as {@link #orElse(java.lang.Object) orElse()}
  * (return a default value if value not present),
  * {@link #ifPresent(Consumer) ifPresent()} (execute a block of code
  * if the value is present), and
@@ -46,9 +46,9 @@ import java.io.Serializable;
 public final class Optional<T> implements Serializable {
 
     /**
-     * Common instance for {@code Optional}s with no value present / {@link #absent()}.
+     * Common instance for {@code Optional}s with no value present / {@link #empty()}.
      */
-    private static final Optional<?> ABSENT = new Optional<>();
+    private static final Optional<?> empty = new Optional<>();
 
     /**
      * If non-null, the value; if null, indicates no value is present.
@@ -56,7 +56,7 @@ public final class Optional<T> implements Serializable {
     private final T value;
 
     /**
-     * Constructs an absent instance.
+     * Constructs an empty instance.
      */
     private Optional() {
         this.value = null;
@@ -90,26 +90,26 @@ public final class Optional<T> implements Serializable {
 
     /**
      * Returns an {@code Optional} describing the specified value, if non-null,
-     * otherwise returns an absent {@code Optional}.
+     * otherwise returns an empty {@code Optional}.
      *
      * @param <T> the class of the value
      * @param value the possibly-null value to describe
      * @return an {@code Optional} with a present value if the specified value
-     * is non-null, otherwise an absent {@code Optional}
+     * is non-null, otherwise an empty {@code Optional}
      */
     public static <T> Optional<T> ofNullable(T value) {
-        return value == null ? (Optional<T>) absent() : of(value);
+        return value == null ? (Optional<T>) empty() : of(value);
     }
 
     /**
-     * Returns an absent {@code Optional} instance.  No value is present for this
+     * Returns an empty {@code Optional} instance.  No value is present for this
      * Optional.
      *
      * @param <T> Type of the non-existent value
-     * @return an absent {@code Optional}
+     * @return an empty {@code Optional}
      */
-    public static <T> Optional<T> absent() {
-        return (Optional<T>) ABSENT;
+    public static <T> Optional<T> empty() {
+        return (Optional<T>) empty;
     }
 
     /**
@@ -132,7 +132,7 @@ public final class Optional<T> implements Serializable {
         if (isPresent()) {
             return value;
         }
-        throw new IllegalStateException("Value is absent.");
+        throw new IllegalStateException("Value is empty.");
     }
 
     /**
@@ -143,7 +143,7 @@ public final class Optional<T> implements Serializable {
      * @return the value, if present, otherwise {@code other}
      * @throws IllegalArgumentException if {@code other} is null
      */
-    public T or(T other) {
+    public T orElse(T other) {
         if (other == null) {
             throw new IllegalArgumentException("null may not be passed as an argument; use orNull() instead.");
         }
@@ -160,7 +160,7 @@ public final class Optional<T> implements Serializable {
      * @return the value if present otherwise the result of {@code otherSupplier.get()}
      * @throws IllegalArgumentException if {@code otherSupplier} is null
      */
-    public T or(Supplier<T> otherSupplier) {
+    public T orElse(Supplier<T> otherSupplier) {
         if (otherSupplier == null) {
             throw new IllegalArgumentException("null may not be passed as an argument; use orNull() instead.");
         }
@@ -237,7 +237,7 @@ public final class Optional<T> implements Serializable {
      * otherwise invoke the function passed as the second parameter.
      *
      * @param consumer block to be executed if a value is present
-     * @param function block to be executed if a value is absent
+     * @param function block to be executed if a value is empty
      */
     public void ifPresentOrElse(Consumer<T> consumer, Function function) {
         if (isPresent()) {
@@ -294,6 +294,6 @@ public final class Optional<T> implements Serializable {
      */
     @Override
     public String toString() {
-        return isPresent() ? String.format("Optional[%s]", value) : "Optional.ABSENT";
+        return isPresent() ? String.format("Optional[%s]", value) : "Optional.empty";
     }
 }

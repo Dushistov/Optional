@@ -35,7 +35,7 @@ import java.io.Serializable;
  * {@code get()} will return the value.
  * <p>
  * <p>Additional methods that depend on the presence or absence of a contained
- * value are provided, such as {@link #or(int) orElse()}
+ * value are provided, such as {@link #orElse(int) orElse()}
  * (return a default value if value not present),
  * {@link #ifPresent(IntConsumer) ifPresent()} (execute a block of code
  * if the value is present), and
@@ -47,9 +47,9 @@ import java.io.Serializable;
 public final class OptionalInt implements Serializable {
 
     /**
-     * Common instance for {@code OptionalInt}s with no value present / {@link #absent()}.
+     * Common instance for {@code OptionalInt}s with no value present / {@link #empty()}.
      */
-    private static final OptionalInt ABSENT = new OptionalInt();
+    private static final OptionalInt empty = new OptionalInt();
 
     /**
      * Indicates whether or not the value is present.
@@ -62,7 +62,7 @@ public final class OptionalInt implements Serializable {
     private final int value;
 
     /**
-     * Constructs an absent instance.
+     * Constructs an empty instance.
      */
     private OptionalInt() {
         this.isPresent = false;
@@ -90,13 +90,13 @@ public final class OptionalInt implements Serializable {
     }
 
     /**
-     * Returns an absent {@code OptionalInt} instance.  No value is present for this
+     * Returns an empty {@code OptionalInt} instance.  No value is present for this
      * Optional.
      *
-     * @return an absent {@code OptionalInt}
+     * @return an empty {@code OptionalInt}
      */
-    public static OptionalInt absent() {
-        return ABSENT;
+    public static OptionalInt empty() {
+        return empty;
     }
 
     /**
@@ -119,7 +119,7 @@ public final class OptionalInt implements Serializable {
         if (isPresent()) {
             return value;
         }
-        throw new IllegalStateException("Value is absent.");
+        throw new IllegalStateException("Value is empty.");
     }
 
     /**
@@ -128,7 +128,7 @@ public final class OptionalInt implements Serializable {
      * @param other the value to be returned if there is no value present
      * @return the value, if present, otherwise {@code other}
      */
-    public int or(int other) {
+    public int orElse(int other) {
         return isPresent() ? value : other;
     }
 
@@ -141,7 +141,7 @@ public final class OptionalInt implements Serializable {
      * @return the value if present otherwise the result of {@code otherSupplier.get()}
      * @throws IllegalArgumentException if {@code otherSupplier} is null
      */
-    public int or(IntSupplier otherSupplier) {
+    public int orElse(IntSupplier otherSupplier) {
         if (otherSupplier == null) {
             throw new IllegalArgumentException("null may not be passed as an argument.");
         }
@@ -239,7 +239,7 @@ public final class OptionalInt implements Serializable {
      * otherwise invoke the function passed as the second parameter.
      *
      * @param consumer block to be executed if a value is present
-     * @param function block to be executed if a value is absent
+     * @param function block to be executed if a value is empty
      */
     public void ifPresentOrElse(IntConsumer consumer, Function function) {
         if (isPresent()) {
@@ -269,6 +269,6 @@ public final class OptionalInt implements Serializable {
      */
     @Override
     public String toString() {
-        return isPresent() ? String.format("OptionalInt[%s]", value) : "OptionalInt.ABSENT";
+        return isPresent() ? String.format("OptionalInt[%s]", value) : "OptionalInt.empty";
     }
 }

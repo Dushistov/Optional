@@ -37,15 +37,15 @@ public class OptionalIntTest {
     }
 
     @Test
-    public void absent() throws Exception {
-        Assert.assertFalse(OptionalInt.absent().isPresent());
+    public void empty() throws Exception {
+        Assert.assertFalse(OptionalInt.empty().isPresent());
     }
 
     @Test
     public void isPresent() throws Exception {
         Assert.assertTrue(OptionalInt.of(42).isPresent());
 
-        Assert.assertFalse(OptionalInt.absent().isPresent());
+        Assert.assertFalse(OptionalInt.empty().isPresent());
     }
 
     @Test
@@ -53,22 +53,22 @@ public class OptionalIntTest {
         Assert.assertEquals(42, OptionalInt.of(42).get());
 
         try {
-            OptionalInt.absent().get();
+            OptionalInt.empty().get();
 
-            Assert.fail("Invoking get() on an absent optional should raise an exception.");
+            Assert.fail("Invoking get() on an empty optional should raise an exception.");
         } catch (IllegalStateException expected) {
             // No-op. This is the expected behaviour.
         }
     }
 
     @Test
-    public void or() throws Exception {
-        Assert.assertEquals(42, OptionalInt.absent().or(42));
+    public void orElse() throws Exception {
+        Assert.assertEquals(42, OptionalInt.empty().orElse(42));
     }
 
     @Test
     public void orWithSupplier() throws Exception {
-        Assert.assertEquals(42, OptionalInt.absent().or(new IntSupplier() {
+        Assert.assertEquals(42, OptionalInt.empty().orElse(new IntSupplier() {
             @Override
             public int get() {
                 return 42;
@@ -79,9 +79,9 @@ public class OptionalIntTest {
     @Test
     public void orThrow() throws Exception {
         try {
-            OptionalInt.absent().orThrow(new Exception("An exception occurred."));
+            OptionalInt.empty().orThrow(new Exception("An exception occurred."));
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -97,9 +97,9 @@ public class OptionalIntTest {
         };
 
         try {
-            OptionalInt.absent().orThrow(anExceptionSupplier);
+            OptionalInt.empty().orThrow(anExceptionSupplier);
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -114,10 +114,10 @@ public class OptionalIntTest {
             }
         });
 
-        OptionalInt.absent().ifPresent(new IntConsumer() {
+        OptionalInt.empty().ifPresent(new IntConsumer() {
             @Override
             public void consume(int value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         });
     }
@@ -132,14 +132,14 @@ public class OptionalIntTest {
         }, new Function() {
             @Override
             public void call() {
-                Assert.fail("ifPresent() on an non-absent optional should call its consumer");
+                Assert.fail("ifPresent() on an non-empty optional should call its consumer");
             }
         });
 
-        OptionalInt.absent().ifPresentOrElse(new IntConsumer() {
+        OptionalInt.empty().ifPresentOrElse(new IntConsumer() {
             @Override
             public void consume(int value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         }, new Function() {
             @Override

@@ -35,7 +35,7 @@ import java.io.Serializable;
  * {@code get()} will return the value.
  * <p>
  * <p>Additional methods that depend on the presence or absence of a contained
- * value are provided, such as {@link #or(double) orElse()}
+ * value are provided, such as {@link #orElse(double) orElse()}
  * (return a default value if value not present),
  * {@link #ifPresent(DoubleConsumer) ifPresent()} (execute a block of code
  * if the value is present), and
@@ -47,9 +47,9 @@ import java.io.Serializable;
 public final class OptionalDouble implements Serializable {
 
     /**
-     * Common instance for {@code OptionalDouble}s with no value present / {@link #absent()}.
+     * Common instance for {@code OptionalDouble}s with no value present / {@link #empty()}.
      */
-    private static final OptionalDouble ABSENT = new OptionalDouble();
+    private static final OptionalDouble empty = new OptionalDouble();
 
     /**
      * Indicates whether or not the value is present.
@@ -62,7 +62,7 @@ public final class OptionalDouble implements Serializable {
     private final double value;
 
     /**
-     * Constructs an absent instance.
+     * Constructs an empty instance.
      */
     private OptionalDouble() {
         this.isPresent = false;
@@ -90,13 +90,13 @@ public final class OptionalDouble implements Serializable {
     }
 
     /**
-     * Returns an absent {@code OptionalDouble} instance.  No value is present for this
+     * Returns an empty {@code OptionalDouble} instance.  No value is present for this
      * Optional.
      *
-     * @return an absent {@code OptionalDouble}
+     * @return an empty {@code OptionalDouble}
      */
-    public static OptionalDouble absent() {
-        return ABSENT;
+    public static OptionalDouble empty() {
+        return empty;
     }
 
     /**
@@ -119,7 +119,7 @@ public final class OptionalDouble implements Serializable {
         if (isPresent()) {
             return value;
         }
-        throw new IllegalStateException("Value is absent.");
+        throw new IllegalStateException("Value is empty.");
     }
 
     /**
@@ -128,7 +128,7 @@ public final class OptionalDouble implements Serializable {
      * @param other the value to be returned if there is no value present
      * @return the value, if present, otherwise {@code other}
      */
-    public double or(double other) {
+    public double orElse(double other) {
         return isPresent() ? value : other;
     }
 
@@ -141,7 +141,7 @@ public final class OptionalDouble implements Serializable {
      * @return the value if present otherwise the result of {@code otherSupplier.get()}
      * @throws IllegalArgumentException if {@code otherSupplier} is null
      */
-    public double or(DoubleSupplier otherSupplier) {
+    public double orElse(DoubleSupplier otherSupplier) {
         if (otherSupplier == null) {
             throw new IllegalArgumentException("null may not be passed as an argument.");
         }
@@ -209,7 +209,7 @@ public final class OptionalDouble implements Serializable {
      * otherwise invoke the function passed as the second parameter.
      *
      * @param consumer block to be executed if a value is present
-     * @param function block to be executed if a value is absent
+     * @param function block to be executed if a value is empty
      */
     public void ifPresentOrElse(DoubleConsumer consumer, Function function) {
         if (isPresent()) {
@@ -269,6 +269,6 @@ public final class OptionalDouble implements Serializable {
      */
     @Override
     public String toString() {
-        return isPresent() ? String.format("OptionalDouble[%s]", value) : "OptionalDouble.ABSENT";
+        return isPresent() ? String.format("OptionalDouble[%s]", value) : "OptionalDouble.empty";
     }
 }

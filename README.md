@@ -19,8 +19,6 @@
 
 ### Unique to `Optional`
 
-- `absent()` instead of `empty()`. [Why?](http://englishthesaurus.net/antonym/present)
-- `or()` instead of `orElse()`.
 - `orNull()` instead of `orElse(null)`.
 - `ifPresentOrElse(Consumer, Function)`.
 - `OptionalByte`, `OptionalShort`, `OptionalFloat`, and `OptionalChar`.

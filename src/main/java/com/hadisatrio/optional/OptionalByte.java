@@ -35,7 +35,7 @@ import java.io.Serializable;
  * {@code get()} will return the value.
  * <p>
  * <p>Additional methods that depend on the presence or absence of a contained
- * value are provided, such as {@link #or(byte) orElse()}
+ * value are provided, such as {@link #orElse(byte) orElse()}
  * (return a default value if value not present),
  * {@link #ifPresent(ByteConsumer) ifPresent()} (execute a block of code
  * if the value is present), and
@@ -47,9 +47,9 @@ import java.io.Serializable;
 public final class OptionalByte implements Serializable {
 
     /**
-     * Common instance for {@code OptionalByte}s with no value present / {@link #absent()}.
+     * Common instance for {@code OptionalByte}s with no value present / {@link #empty()}.
      */
-    private static final OptionalByte ABSENT = new OptionalByte();
+    private static final OptionalByte empty = new OptionalByte();
 
     /**
      * Indicates whether or not the value is present.
@@ -62,7 +62,7 @@ public final class OptionalByte implements Serializable {
     private final byte value;
 
     /**
-     * Constructs an absent instance.
+     * Constructs an empty instance.
      */
     private OptionalByte() {
         this.isPresent = false;
@@ -90,13 +90,13 @@ public final class OptionalByte implements Serializable {
     }
 
     /**
-     * Returns an absent {@code OptionalByte} instance.  No value is present for this
+     * Returns an empty {@code OptionalByte} instance.  No value is present for this
      * Optional.
      *
-     * @return an absent {@code OptionalByte}
+     * @return an empty {@code OptionalByte}
      */
-    public static OptionalByte absent() {
-        return ABSENT;
+    public static OptionalByte empty() {
+        return empty;
     }
 
     /**
@@ -119,7 +119,7 @@ public final class OptionalByte implements Serializable {
         if (isPresent()) {
             return value;
         }
-        throw new IllegalStateException("Value is absent.");
+        throw new IllegalStateException("Value is empty.");
     }
 
     /**
@@ -128,7 +128,7 @@ public final class OptionalByte implements Serializable {
      * @param other the value to be returned if there is no value present
      * @return the value, if present, otherwise {@code other}
      */
-    public byte or(byte other) {
+    public byte orElse(byte other) {
         return isPresent() ? value : other;
     }
 
@@ -141,7 +141,7 @@ public final class OptionalByte implements Serializable {
      * @return the value if present otherwise the result of {@code otherSupplier.get()}
      * @throws IllegalArgumentException if {@code otherSupplier} is null
      */
-    public byte or(ByteSupplier otherSupplier) {
+    public byte orElse(ByteSupplier otherSupplier) {
         if (otherSupplier == null) {
             throw new IllegalArgumentException("null may not be passed as an argument.");
         }
@@ -209,7 +209,7 @@ public final class OptionalByte implements Serializable {
      * otherwise invoke the function passed as the second parameter.
      *
      * @param consumer block to be executed if a value is present
-     * @param function block to be executed if a value is absent
+     * @param function block to be executed if a value is empty
      */
     public void ifPresentOrElse(ByteConsumer consumer, Function function) {
         if (isPresent()) {
@@ -269,6 +269,6 @@ public final class OptionalByte implements Serializable {
      */
     @Override
     public String toString() {
-        return isPresent() ? String.format("OptionalByte[%s]", value) : "OptionalByte.ABSENT";
+        return isPresent() ? String.format("OptionalByte[%s]", value) : "OptionalByte.empty";
     }
 }

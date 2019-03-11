@@ -37,15 +37,15 @@ public class OptionalShortTest {
     }
 
     @Test
-    public void absent() throws Exception {
-        Assert.assertFalse(OptionalShort.absent().isPresent());
+    public void empty() throws Exception {
+        Assert.assertFalse(OptionalShort.empty().isPresent());
     }
 
     @Test
     public void isPresent() throws Exception {
         Assert.assertTrue(OptionalShort.of(((short) 42)).isPresent());
 
-        Assert.assertFalse(OptionalShort.absent().isPresent());
+        Assert.assertFalse(OptionalShort.empty().isPresent());
     }
 
     @Test
@@ -53,22 +53,22 @@ public class OptionalShortTest {
         Assert.assertEquals(((short) 42), OptionalShort.of(((short) 42)).get());
 
         try {
-            OptionalShort.absent().get();
+            OptionalShort.empty().get();
 
-            Assert.fail("Invoking get() on an absent optional should raise an exception.");
+            Assert.fail("Invoking get() on an empty optional should raise an exception.");
         } catch (IllegalStateException expected) {
             // No-op. This is the expected behaviour.
         }
     }
 
     @Test
-    public void or() throws Exception {
-        Assert.assertEquals(((short) 42), OptionalShort.absent().or(((short) 42)));
+    public void orElse() throws Exception {
+        Assert.assertEquals(((short) 42), OptionalShort.empty().orElse(((short) 42)));
     }
 
     @Test
     public void orWithSupplier() throws Exception {
-        Assert.assertEquals((short) 42, OptionalShort.absent().or(new ShortSupplier() {
+        Assert.assertEquals((short) 42, OptionalShort.empty().orElse(new ShortSupplier() {
             @Override
             public short get() {
                 return 42;
@@ -79,9 +79,9 @@ public class OptionalShortTest {
     @Test
     public void orThrow() throws Exception {
         try {
-            OptionalShort.absent().orThrow(new Exception("An exception occurred."));
+            OptionalShort.empty().orThrow(new Exception("An exception occurred."));
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -97,9 +97,9 @@ public class OptionalShortTest {
         };
 
         try {
-            OptionalShort.absent().orThrow(anExceptionSupplier);
+            OptionalShort.empty().orThrow(anExceptionSupplier);
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -114,10 +114,10 @@ public class OptionalShortTest {
             }
         });
 
-        OptionalShort.absent().ifPresent(new ShortConsumer() {
+        OptionalShort.empty().ifPresent(new ShortConsumer() {
             @Override
             public void consume(short value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         });
     }
@@ -132,14 +132,14 @@ public class OptionalShortTest {
         }, new Function() {
             @Override
             public void call() {
-                Assert.fail("ifPresent() on an non-absent optional should call its consumer");
+                Assert.fail("ifPresent() on an non-empty optional should call its consumer");
             }
         });
 
-        OptionalShort.absent().ifPresentOrElse(new ShortConsumer() {
+        OptionalShort.empty().ifPresentOrElse(new ShortConsumer() {
             @Override
             public void consume(short value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         }, new Function() {
             @Override

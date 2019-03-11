@@ -37,15 +37,15 @@ public class OptionalDoubleTest {
     }
 
     @Test
-    public void absent() throws Exception {
-        Assert.assertFalse(OptionalDouble.absent().isPresent());
+    public void empty() throws Exception {
+        Assert.assertFalse(OptionalDouble.empty().isPresent());
     }
 
     @Test
     public void isPresent() throws Exception {
         Assert.assertTrue(OptionalDouble.of(42d).isPresent());
 
-        Assert.assertFalse(OptionalDouble.absent().isPresent());
+        Assert.assertFalse(OptionalDouble.empty().isPresent());
     }
 
     @Test
@@ -53,22 +53,22 @@ public class OptionalDoubleTest {
         Assert.assertEquals(42d, OptionalDouble.of(42d).get(), 0);
 
         try {
-            OptionalDouble.absent().get();
+            OptionalDouble.empty().get();
 
-            Assert.fail("Invoking get() on an absent optional should raise an exception.");
+            Assert.fail("Invoking get() on an empty optional should raise an exception.");
         } catch (IllegalStateException expected) {
             // No-op. This is the expected behaviour.
         }
     }
 
     @Test
-    public void or() throws Exception {
-        Assert.assertEquals(42d, OptionalDouble.absent().or(42d), 0);
+    public void orElse() throws Exception {
+        Assert.assertEquals(42d, OptionalDouble.empty().orElse(42d), 0);
     }
 
     @Test
     public void orWithSupplier() throws Exception {
-        Assert.assertEquals(42d, OptionalDouble.absent().or(new DoubleSupplier() {
+        Assert.assertEquals(42d, OptionalDouble.empty().orElse(new DoubleSupplier() {
             @Override
             public double get() {
                 return 42d;
@@ -79,9 +79,9 @@ public class OptionalDoubleTest {
     @Test
     public void orThrow() throws Exception {
         try {
-            OptionalDouble.absent().orThrow(new Exception("An exception occurred."));
+            OptionalDouble.empty().orThrow(new Exception("An exception occurred."));
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -97,9 +97,9 @@ public class OptionalDoubleTest {
         };
 
         try {
-            OptionalDouble.absent().orThrow(anExceptionSupplier);
+            OptionalDouble.empty().orThrow(anExceptionSupplier);
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -114,10 +114,10 @@ public class OptionalDoubleTest {
             }
         });
 
-        OptionalDouble.absent().ifPresent(new DoubleConsumer() {
+        OptionalDouble.empty().ifPresent(new DoubleConsumer() {
             @Override
             public void consume(double value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         });
     }
@@ -132,14 +132,14 @@ public class OptionalDoubleTest {
         }, new Function() {
             @Override
             public void call() {
-                Assert.fail("ifPresent() on an non-absent optional should call its consumer");
+                Assert.fail("ifPresent() on an non-empty optional should call its consumer");
             }
         });
 
-        OptionalDouble.absent().ifPresentOrElse(new DoubleConsumer() {
+        OptionalDouble.empty().ifPresentOrElse(new DoubleConsumer() {
             @Override
             public void consume(double value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         }, new Function() {
             @Override

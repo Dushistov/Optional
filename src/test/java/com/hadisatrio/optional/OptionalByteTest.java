@@ -37,15 +37,15 @@ public class OptionalByteTest {
     }
 
     @Test
-    public void absent() throws Exception {
-        Assert.assertFalse(OptionalByte.absent().isPresent());
+    public void empty() throws Exception {
+        Assert.assertFalse(OptionalByte.empty().isPresent());
     }
 
     @Test
     public void isPresent() throws Exception {
         Assert.assertTrue(OptionalByte.of(((byte) 42)).isPresent());
 
-        Assert.assertFalse(OptionalByte.absent().isPresent());
+        Assert.assertFalse(OptionalByte.empty().isPresent());
     }
 
     @Test
@@ -53,22 +53,22 @@ public class OptionalByteTest {
         Assert.assertEquals(((byte) 42), OptionalByte.of(((byte) 42)).get());
 
         try {
-            OptionalByte.absent().get();
+            OptionalByte.empty().get();
 
-            Assert.fail("Invoking get() on an absent optional should raise an exception.");
+            Assert.fail("Invoking get() on an empty optional should raise an exception.");
         } catch (IllegalStateException expected) {
             // No-op. This is the expected behaviour.
         }
     }
 
     @Test
-    public void or() throws Exception {
-        Assert.assertEquals(((byte) 42), OptionalByte.absent().or(((byte) 42)));
+    public void orElse() throws Exception {
+        Assert.assertEquals(((byte) 42), OptionalByte.empty().orElse(((byte) 42)));
     }
 
     @Test
     public void orWithSupplier() throws Exception {
-        Assert.assertEquals((byte) 42, OptionalByte.absent().or(new ByteSupplier() {
+        Assert.assertEquals((byte) 42, OptionalByte.empty().orElse(new ByteSupplier() {
             @Override
             public byte get() {
                 return 42;
@@ -79,9 +79,9 @@ public class OptionalByteTest {
     @Test
     public void orThrow() throws Exception {
         try {
-            OptionalByte.absent().orThrow(new Exception("An exception occurred."));
+            OptionalByte.empty().orThrow(new Exception("An exception occurred."));
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -97,9 +97,9 @@ public class OptionalByteTest {
         };
 
         try {
-            OptionalByte.absent().orThrow(anExceptionSupplier);
+            OptionalByte.empty().orThrow(anExceptionSupplier);
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -114,10 +114,10 @@ public class OptionalByteTest {
             }
         });
 
-        OptionalByte.absent().ifPresent(new ByteConsumer() {
+        OptionalByte.empty().ifPresent(new ByteConsumer() {
             @Override
             public void consume(byte value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         });
     }
@@ -132,14 +132,14 @@ public class OptionalByteTest {
         }, new Function() {
             @Override
             public void call() {
-                Assert.fail("ifPresent() on an non-absent optional should call its consumer");
+                Assert.fail("ifPresent() on an non-empty optional should call its consumer");
             }
         });
 
-        OptionalByte.absent().ifPresentOrElse(new ByteConsumer() {
+        OptionalByte.empty().ifPresentOrElse(new ByteConsumer() {
             @Override
             public void consume(byte value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         }, new Function() {
             @Override

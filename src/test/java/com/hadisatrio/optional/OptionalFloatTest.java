@@ -37,15 +37,15 @@ public class OptionalFloatTest {
     }
 
     @Test
-    public void absent() throws Exception {
-        Assert.assertFalse(OptionalFloat.absent().isPresent());
+    public void empty() throws Exception {
+        Assert.assertFalse(OptionalFloat.empty().isPresent());
     }
 
     @Test
     public void isPresent() throws Exception {
         Assert.assertTrue(OptionalFloat.of(42f).isPresent());
 
-        Assert.assertFalse(OptionalFloat.absent().isPresent());
+        Assert.assertFalse(OptionalFloat.empty().isPresent());
     }
 
     @Test
@@ -53,22 +53,22 @@ public class OptionalFloatTest {
         Assert.assertEquals(42f, OptionalFloat.of(42f).get(), 0);
 
         try {
-            OptionalFloat.absent().get();
+            OptionalFloat.empty().get();
 
-            Assert.fail("Invoking get() on an absent optional should raise an exception.");
+            Assert.fail("Invoking get() on an empty optional should raise an exception.");
         } catch (IllegalStateException expected) {
             // No-op. This is the expected behaviour.
         }
     }
 
     @Test
-    public void or() throws Exception {
-        Assert.assertEquals(42f, OptionalFloat.absent().or(42f), 0);
+    public void orElse() throws Exception {
+        Assert.assertEquals(42f, OptionalFloat.empty().orElse(42f), 0);
     }
 
     @Test
     public void orWithSupplier() throws Exception {
-        Assert.assertEquals(42f, OptionalFloat.absent().or(new FloatSupplier() {
+        Assert.assertEquals(42f, OptionalFloat.empty().orElse(new FloatSupplier() {
             @Override
             public float get() {
                 return 42f;
@@ -79,9 +79,9 @@ public class OptionalFloatTest {
     @Test
     public void orThrow() throws Exception {
         try {
-            OptionalFloat.absent().orThrow(new Exception("An exception occurred."));
+            OptionalFloat.empty().orThrow(new Exception("An exception occurred."));
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -97,9 +97,9 @@ public class OptionalFloatTest {
         };
 
         try {
-            OptionalFloat.absent().orThrow(anExceptionSupplier);
+            OptionalFloat.empty().orThrow(anExceptionSupplier);
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -114,10 +114,10 @@ public class OptionalFloatTest {
             }
         });
 
-        OptionalFloat.absent().ifPresent(new FloatConsumer() {
+        OptionalFloat.empty().ifPresent(new FloatConsumer() {
             @Override
             public void consume(float value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         });
     }
@@ -132,14 +132,14 @@ public class OptionalFloatTest {
         }, new Function() {
             @Override
             public void call() {
-                Assert.fail("ifPresent() on an non-absent optional should call its consumer");
+                Assert.fail("ifPresent() on an non-empty optional should call its consumer");
             }
         });
 
-        OptionalFloat.absent().ifPresentOrElse(new FloatConsumer() {
+        OptionalFloat.empty().ifPresentOrElse(new FloatConsumer() {
             @Override
             public void consume(float value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         }, new Function() {
             @Override

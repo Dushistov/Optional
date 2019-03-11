@@ -37,15 +37,15 @@ public class OptionalCharTest {
     }
 
     @Test
-    public void absent() throws Exception {
-        Assert.assertFalse(OptionalChar.absent().isPresent());
+    public void empty() throws Exception {
+        Assert.assertFalse(OptionalChar.empty().isPresent());
     }
 
     @Test
     public void isPresent() throws Exception {
         Assert.assertTrue(OptionalChar.of('H').isPresent());
 
-        Assert.assertFalse(OptionalChar.absent().isPresent());
+        Assert.assertFalse(OptionalChar.empty().isPresent());
     }
 
     @Test
@@ -53,22 +53,22 @@ public class OptionalCharTest {
         Assert.assertEquals('H', OptionalChar.of('H').get(), 0);
 
         try {
-            OptionalChar.absent().get();
+            OptionalChar.empty().get();
 
-            Assert.fail("Invoking get() on an absent optional should raise an exception.");
+            Assert.fail("Invoking get() on an empty optional should raise an exception.");
         } catch (IllegalStateException expected) {
             // No-op. This is the expected behaviour.
         }
     }
 
     @Test
-    public void or() throws Exception {
-        Assert.assertEquals('H', OptionalChar.absent().or('H'), 0);
+    public void orElse() throws Exception {
+        Assert.assertEquals('H', OptionalChar.empty().orElse('H'), 0);
     }
 
     @Test
     public void orWithSupplier() throws Exception {
-        Assert.assertEquals('H', OptionalChar.absent().or(new CharSupplier() {
+        Assert.assertEquals('H', OptionalChar.empty().orElse(new CharSupplier() {
             @Override
             public char get() {
                 return 'H';
@@ -79,9 +79,9 @@ public class OptionalCharTest {
     @Test
     public void orThrow() throws Exception {
         try {
-            OptionalChar.absent().orThrow(new Exception("An exception occurred."));
+            OptionalChar.empty().orThrow(new Exception("An exception occurred."));
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -97,9 +97,9 @@ public class OptionalCharTest {
         };
 
         try {
-            OptionalChar.absent().orThrow(anExceptionSupplier);
+            OptionalChar.empty().orThrow(anExceptionSupplier);
 
-            Assert.fail("Invoking orThrow() on an absent optional should throw an exception.");
+            Assert.fail("Invoking orThrow() on an empty optional should throw an exception.");
         } catch (Exception anException) {
             // No-op. This is the expected behaviour.
         }
@@ -114,10 +114,10 @@ public class OptionalCharTest {
             }
         });
 
-        OptionalChar.absent().ifPresent(new CharConsumer() {
+        OptionalChar.empty().ifPresent(new CharConsumer() {
             @Override
             public void consume(char value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         });
     }
@@ -132,14 +132,14 @@ public class OptionalCharTest {
         }, new Function() {
             @Override
             public void call() {
-                Assert.fail("ifPresent() on an non-absent optional should call its consumer");
+                Assert.fail("ifPresent() on an non-empty optional should call its consumer");
             }
         });
 
-        OptionalChar.absent().ifPresentOrElse(new CharConsumer() {
+        OptionalChar.empty().ifPresentOrElse(new CharConsumer() {
             @Override
             public void consume(char value) {
-                Assert.fail("ifPresent() on an absent optional should never call its consumer");
+                Assert.fail("ifPresent() on an empty optional should never call its consumer");
             }
         }, new Function() {
             @Override
